@@ -27,7 +27,7 @@ export class CreateTableCity1688039749981 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-    drop table public.city;
+        drop table public.city;
         `);
   }
 }
