@@ -2,14 +2,20 @@ import { CategoryEntity } from 'src/category/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
+@Entity({ name: 'product' })
 export class ProductEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
+
+  @Column({ name: 'name', nullable: false })
+  name: string;
 
   @Column({ name: 'category_id', nullable: false })
   categoryId: number;
@@ -21,12 +27,11 @@ export class ProductEntity {
   image: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-  // Aqui quer dizer que um produto pode ter apenas uma categoria
   @ManyToOne(
     () => CategoryEntity,
     (category: CategoryEntity) => category.products,

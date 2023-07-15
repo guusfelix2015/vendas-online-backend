@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'category' })
@@ -16,12 +17,11 @@ export class CategoryEntity {
   name: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-  // Aqui quer dizer que uma categoria pode ter vários produtos
   @OneToMany(() => ProductEntity, (product: ProductEntity) => product.category)
   products: ProductEntity;
 }
