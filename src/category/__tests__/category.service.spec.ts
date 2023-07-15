@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CategoryService } from '../category.service';
 import { CategoryEntity } from '../entities/category.entity';
 import { categoryMock } from '../__mocks__/category.mock';
+import { createCategoryMock } from '../__mocks__/create-category.mock';
+import { BadRequestException } from '@nestjs/common';
 
 describe('CategoryService', () => {
   let service: CategoryService;
@@ -16,6 +18,7 @@ describe('CategoryService', () => {
         {
           provide: getRepositoryToken(CategoryEntity),
           useValue: {
+            findOne: jest.fn().mockResolvedValue(categoryMock),
             find: jest.fn().mockResolvedValue([categoryMock]),
             save: jest.fn().mockResolvedValue(categoryMock),
           },
@@ -50,5 +53,23 @@ describe('CategoryService', () => {
     jest.spyOn(categoryRepository, 'find').mockRejectedValue(new Error());
 
     expect(service.findAllCategories()).rejects.toThrowError();
+  });
+
+  it('should return error if category name already exists', async () => {
+    jest.spyOn(categoryRepository, 'findOne').mockResolvedValue(categoryMock);
+    await expect(
+      service.createCategory(createCategoryMock),
+    ).rejects.toThrowError(BadRequestException);
+  });
+
+  it('should return category created', async () => {
+    jest.spyOn(categoryRepository, 'findOne').mockResolvedValue(undefined);
+    const category = await service.createCategory(createCategoryMock);
+    expect(category).toEqual(categoryMock);
+  });
+
+  it('should return error in category created', async () => {
+    jest.spyOn(categoryRepository, 'save').mockRejectedValue(new Error());
+    expect(service.createCategory(createCategoryMock)).rejects.toThrowError();
   });
 });
