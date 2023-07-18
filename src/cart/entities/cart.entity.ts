@@ -1,6 +1,9 @@
+import { CartProdutEntity } from '../../cart-product/entity/cart-product-entity';
 import {
   Column,
   CreateDateColumn,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,4 +20,8 @@ export class CartEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToOne(() => CartEntity, (cartEntity) => cartEntity.cartProduct)
+  @JoinColumn({ name: 'cart_id', referencedColumnName: 'id' })
+  cartProduct?: CartProdutEntity[];
 }
