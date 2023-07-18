@@ -6,7 +6,7 @@ import { UserService } from '../user/user.service';
 import { LoginDto } from './dtos/login.dto';
 import { LoginPayload } from './dtos/loginPayload.dto';
 import { ReturnLoginDto } from './dtos/returnLogin.dto';
-import { validatePassword } from 'src/utils/validate-password';
+import { validatePassword } from '../utils/validate-password';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
     );
 
     if (!user || !isMatch) {
-      throw new NotFoundException('Email or passord invalid');
+      throw new NotFoundException('Email or password invalid');
     }
     return {
       accessToken: this.jwtService.sign({ ...new LoginPayload(user) }),
