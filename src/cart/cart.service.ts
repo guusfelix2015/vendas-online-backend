@@ -4,7 +4,6 @@ import { CartEntity } from './entities/cart.entity';
 import { InsertCartDto } from './dtos/insert-cart.dto';
 import { DeleteResult, Repository } from 'typeorm';
 import { CartProductService } from '../cart-product/cart-product.service';
-import { UserId } from 'src/decorators/user-id.decorator';
 import { UpdateCartDto } from './dtos/update-cart.dto';
 
 const LINE_AFECTED = 1;
