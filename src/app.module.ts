@@ -14,6 +14,8 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CartProductModule } from './cart-product/cart-product.module';
+import { Adress2Controller } from './adress2/adress2.controller';
+import { BlauService } from './blau/blau.service';
 
 @Module({
   imports: [
@@ -43,12 +45,13 @@ import { CartProductModule } from './cart-product/cart-product.module';
     CartModule,
     CartProductModule,
   ],
-  controllers: [],
+  controllers: [Adress2Controller],
   providers: [
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    BlauService,
   ],
 })
 export class AppModule {}
