@@ -21,6 +21,9 @@ import { UpdateCartDto } from './dtos/update-cart.dto';
 @Roles(UserType.User, UserType.Admin)
 @Controller('cart')
 export class CartController {
+  insertProductInCart() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private readonly cartService: CartService) {}
 
   @UsePipes(ValidationPipe)
