@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { userEntityMock } from '../../user/__mocks__/user.mock';
 import { AddressController } from '../address.controller';
 import { AddressService } from '../address.service';
-import { userEntityMock } from '../../user/__mocks__/user.mock';
 import { addressMock } from '../__mocks__/address.mock';
 import { createAddressMock } from '../__mocks__/create-address.mock';
 
-describe('AdressController', () => {
+describe('AddressController', () => {
   let controller: AddressController;
   let addressService: AddressService;
 
@@ -16,7 +16,7 @@ describe('AdressController', () => {
           provide: AddressService,
           useValue: {
             createAddress: jest.fn().mockResolvedValue(addressMock),
-            findAddressesByUserId: jest.fn().mockResolvedValue([addressMock]),
+            findAddressByUserId: jest.fn().mockResolvedValue([addressMock]),
           },
         },
       ],
@@ -37,14 +37,16 @@ describe('AdressController', () => {
       createAddressMock,
       userEntityMock.id,
     );
+
     expect(address).toEqual(addressMock);
   });
 
-  it('should return array of address in findAddressesByUserId', async () => {
-    const addresses = await controller.findAddressesByUserId(userEntityMock.id);
+  it('should address Entity in findAddressByUserId', async () => {
+    const addresses = await controller.findAddressByUserId(userEntityMock.id);
 
     expect(addresses).toEqual([
       {
+        id: addressMock.id,
         complement: addressMock.complement,
         numberAddress: addressMock.numberAddress,
         cep: addressMock.cep,

@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'order' })
@@ -32,7 +33,7 @@ export class OrderEntity {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.orders)
@@ -47,6 +48,8 @@ export class OrderEntity {
   @JoinColumn({ name: 'payment_id', referencedColumnName: 'id' })
   payment?: PaymentEntity;
 
-  @OneToMany(() => OrderProductEntity, (oderProduct) => oderProduct.orders)
+  @OneToMany(() => OrderProductEntity, (orderProduct) => orderProduct.order)
   ordersProduct?: OrderProductEntity[];
+
+  amountProducts?: number;
 }

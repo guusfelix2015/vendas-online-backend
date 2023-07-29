@@ -1,8 +1,8 @@
-import { jwtMock } from '../../auth/__mocks__/jwt.mock';
-import { ReturnLoginDto } from '../../auth/dtos/returnLogin.dto';
 import { userEntityMock } from '../../user/__mocks__/user.mock';
+import { ReturnLogin } from '../dtos/returnLogin.dto';
+import { jwtMock } from './jwt.mock';
 
-export const retunrLoginMock: ReturnLoginDto = {
+export const returnLoginMock: ReturnLogin = {
   accessToken: jwtMock,
   user: userEntityMock,
 };

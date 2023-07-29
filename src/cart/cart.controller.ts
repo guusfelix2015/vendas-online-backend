@@ -6,47 +6,57 @@ import {
   Param,
   Patch,
   Post,
+  Res,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { Roles } from '../decorators/roles.decorator';
-import { UserType } from '../user/enum/user-type.enum';
-import { InsertCartDto } from './dtos/insert-cart.dto';
-import { CartService } from './cart.service';
 import { UserId } from '../decorators/user-id.decorator';
-import { ReturnCartDto } from './dtos/return-cart.dto';
+import { UserType } from '../user/enum/user-type.enum';
 import { DeleteResult } from 'typeorm';
-import { UpdateCartDto } from './dtos/update-cart.dto';
+import { CartService } from './cart.service';
+import { InsertCartDTO } from './dtos/insert-cart.dto';
+import { ReturnCartDTO } from './dtos/return-cart.dto';
+import { UpdateCartDTO } from './dtos/update-cart.dto';
+import { Response } from 'express';
 
-@Roles(UserType.User, UserType.Admin)
+@Roles(UserType.User, UserType.Admin, UserType.Root)
 @Controller('cart')
 export class CartController {
-  insertProductInCart() {
-    throw new Error('Method not implemented.');
-  }
   constructor(private readonly cartService: CartService) {}
 
   @UsePipes(ValidationPipe)
   @Post()
   async createCart(
-    @Body() insertCart: InsertCartDto,
+    @Body() insertCart: InsertCartDTO,
     @UserId() userId: number,
-  ): Promise<ReturnCartDto> {
-    return new ReturnCartDto(
-      await this.cartService.insertProductCart(insertCart, userId),
+  ): Promise<ReturnCartDTO> {
+    return new ReturnCartDTO(
+      await this.cartService.insertProductInCart(insertCart, userId),
     );
   }
 
   @Get()
-  async findCartByUserId(@UserId() userId: number): Promise<ReturnCartDto> {
-    return new ReturnCartDto(
-      await this.cartService.findCartByUserId(userId, true),
-    );
+  async findCartByUserId(
+    @UserId() userId: number,
+    @Res({ passthrough: true }) res?: Response,
+  ): Promise<ReturnCartDTO> {
+    const cart = await this.cartService
+      .findCartByUserId(userId, true)
+      .catch(() => undefined);
+
+    if (cart) {
+      return cart;
+    }
+
+    res.status(204).send();
+
+    return;
   }
 
   @Delete()
   async clearCart(@UserId() userId: number): Promise<DeleteResult> {
-    return await this.cartService.clearCart(userId);
+    return this.cartService.clearCart(userId);
   }
 
   @Delete('/product/:productId')
@@ -60,11 +70,11 @@ export class CartController {
   @UsePipes(ValidationPipe)
   @Patch()
   async updateProductInCart(
-    @Body() updateCartDto: UpdateCartDto,
+    @Body() updateCartDTO: UpdateCartDTO,
     @UserId() userId: number,
-  ): Promise<ReturnCartDto> {
-    return new ReturnCartDto(
-      await this.cartService.updateProductInCart(updateCartDto, userId),
+  ): Promise<ReturnCartDTO> {
+    return new ReturnCartDTO(
+      await this.cartService.updateProductInCart(updateCartDTO, userId),
     );
   }
 }

@@ -1,19 +1,25 @@
-import { ReturnCartDto } from '../../cart/dtos/return-cart.dto';
-import { ReturnProductDto } from '../../product/dtos/return-products.dto';
+import { ReturnCartDTO } from '../../cart/dtos/return-cart.dto';
+import { ReturnProduct } from '../../product/dtos/return-product.dto';
+import { CartProductEntity } from '../entities/cart-product.entity';
 
-export class ReturnCartProductDto {
+export class ReturnCartProductDTO {
   id: number;
-  product?: ReturnProductDto;
-  cart?: ReturnCartDto;
+  cartId: number;
   productId: number;
   amount: number;
-  cartId: number;
-  constructor(cartProduct: ReturnCartProductDto) {
+  product?: ReturnProduct;
+  cart?: ReturnCartDTO;
+
+  constructor(cartProduct: CartProductEntity) {
     this.id = cartProduct.id;
-    this.amount = cartProduct.amount;
-    this.productId = cartProduct.productId;
     this.cartId = cartProduct.cartId;
-    this.product = cartProduct.product;
-    this.cart = cartProduct.cart;
+    this.productId = cartProduct.productId;
+    this.amount = cartProduct.amount;
+    this.product = cartProduct.product
+      ? new ReturnProduct(cartProduct.product)
+      : undefined;
+    this.cart = cartProduct.cart
+      ? new ReturnCartDTO(cartProduct.cart)
+      : undefined;
   }
 }

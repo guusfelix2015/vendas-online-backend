@@ -2,13 +2,13 @@ import { UserEntity } from '../entities/user.entity';
 import { UserType } from '../enum/user-type.enum';
 
 export const userEntityMock: UserEntity = {
-  cpf: '12312312300',
+  cpf: '123543543',
   createdAt: new Date(),
-  email: 'gusfelix2016@gmail.com',
-  id: 7,
-  name: '12131231',
-  password: '$2b$10$SNEeZdsba6lQ3RtTgMn3aeJz7KNPSkCHLbGUpPxQiHCYUdDPbW4.m',
-  phone: '34992910363',
-  typeUser: UserType.Admin,
+  email: 'emailmock@emali.com',
+  id: 43242,
+  name: 'nameMock',
+  password: '$2b$10$S62WmVpIxL52Z.0y22DWfuaAz8.XUNESChWP.AlMFZnOJ9n9uiqi.',
+  phone: '321532523532',
+  typeUser: UserType.User,
   updatedAt: new Date(),
 };

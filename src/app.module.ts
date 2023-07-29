@@ -14,11 +14,11 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CartProductModule } from './cart-product/cart-product.module';
-import { BlauService } from './blau/blau.service';
 import { PaymentStatusModule } from './payment-status/payment-status.module';
 import { PaymentModule } from './payment/payment.module';
-import { OrderProductModule } from './order-product/order-product.module';
 import { OrderModule } from './order/order.module';
+import { OrderProductModule } from './order-product/order-product.module';
+import { CorreiosModule } from './correios/correios.module';
 
 @Module({
   imports: [
@@ -32,8 +32,8 @@ import { OrderModule } from './order/order.module';
       password: process.env.DB_PASSWORD,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
-      entities: [`${__dirname}/**/*.entity{.ts,.js}`],
-      migrations: [`${__dirname}/migration/**/*{.ts,.js}`],
+      entities: [`${__dirname}/**/*.entity{.js,.ts}`],
+      migrations: [`${__dirname}/migration/{.ts,*.js}`],
       migrationsRun: true,
     }),
     UserModule,
@@ -49,8 +49,9 @@ import { OrderModule } from './order/order.module';
     CartProductModule,
     PaymentStatusModule,
     PaymentModule,
-    OrderProductModule,
     OrderModule,
+    OrderProductModule,
+    CorreiosModule,
   ],
   controllers: [],
   providers: [
@@ -58,7 +59,6 @@ import { OrderModule } from './order/order.module';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
-    BlauService,
   ],
 })
 export class AppModule {}

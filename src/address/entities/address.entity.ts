@@ -1,4 +1,3 @@
-import { OrderEntity } from '../../order/entities/order.entity';
 import { CityEntity } from '../../city/entities/city.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import {
@@ -9,7 +8,9 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { OrderEntity } from '../../order/entities/order.entity';
 
 @Entity({ name: 'address' })
 export class AddressEntity {
@@ -34,7 +35,7 @@ export class AddressEntity {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.addresses)

@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { CityEntity } from './entities/city.entity';
 import { CityService } from './city.service';
+import { CityEntity } from './entities/city.entity';
 
 @Controller('city')
 export class CityController {
@@ -10,6 +10,6 @@ export class CityController {
   async getAllCitiesByStateId(
     @Param('stateId') stateId: number,
   ): Promise<CityEntity[]> {
-    return await this.cityService.getAllCitiesByStateId(stateId);
+    return this.cityService.getAllCitiesByStateId(stateId);
   }
 }

@@ -1,2 +1,2 @@
 export const jwtMock =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZVVzZXIiOjIsImlhdCI6MTY4OTY4MTE0MSwiZXhwIjoxNjkwMjg1OTQxfQ.iMPhQ4z4fU38s4sjIk7mK0F4tvsoJT9o-zHdzj6uJlY';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZVVzZXIiOjEsImlhdCI6MTY3NTcyNjIzOCwiZXhwIjoxNjc2MzMxMDM4fQ.c438tTJwSIX8Tq-mj_8grpRmLiwt2V-0bZjPuqE49k8';

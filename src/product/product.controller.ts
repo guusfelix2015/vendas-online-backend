@@ -3,71 +3,86 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { UserType } from '../user/enum/user-type.enum';
-import { Roles } from '../decorators/roles.decorator';
-import { ReturnProductDto } from './dtos/return-products.dto';
-import { CreateProductDto } from './dtos/create-product.dto';
+import { Pagination } from '../dtos/pagination.dto';
 import { DeleteResult } from 'typeorm';
-import { UpdateProductDto } from './dtos/update-product.dto';
+import { Roles } from '../decorators/roles.decorator';
+import { UserType } from '../user/enum/user-type.enum';
+import { CreateProductDTO } from './dtos/create-product.dto';
+import { ReturnPriceDeliveryDto } from './dtos/return-price-delivery.dto';
+import { ReturnProduct } from './dtos/return-product.dto';
+import { UpdateProductDTO } from './dtos/update-procut.dto';
 import { ProductEntity } from './entities/product.entity';
+import { ProductService } from './product.service';
 
-@Roles(UserType.Admin, UserType.User)
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Roles(UserType.Admin, UserType.Root, UserType.User)
+  @Get()
+  async findAll(): Promise<ReturnProduct[]> {
+    return (await this.productService.findAll([], true)).map(
+      (product) => new ReturnProduct(product),
+    );
+  }
+
+  @Roles(UserType.Admin, UserType.Root, UserType.User)
+  @Get('/page')
+  async findAllPage(
+    @Query('search') search?: string,
+    @Query('size') size?: number,
+    @Query('page') page?: number,
+  ): Promise<Pagination<ReturnProduct[]>> {
+    return this.productService.findAllPage(search, size, page);
+  }
+
+  @Roles(UserType.Admin, UserType.Root, UserType.User)
+  @Get('/:productId')
+  async findProductById(@Param('productId') productId): Promise<ReturnProduct> {
+    return new ReturnProduct(
+      await this.productService.findProductById(productId, true),
+    );
+  }
+
+  @Roles(UserType.Admin, UserType.Root)
   @UsePipes(ValidationPipe)
   @Post()
   async createProduct(
-    @Body() createProduct: CreateProductDto,
-  ): Promise<ReturnProductDto> {
-    const product = await this.productService.createProduct(createProduct);
-
-    return product;
+    @Body() createProduct: CreateProductDTO,
+  ): Promise<ProductEntity> {
+    return this.productService.createProduct(createProduct);
   }
 
-  @Roles(UserType.Admin)
+  @Roles(UserType.Admin, UserType.Root)
   @Delete('/:productId')
   async deleteProduct(
     @Param('productId') productId: number,
   ): Promise<DeleteResult> {
-    const product = await this.productService.deleteProduct(productId);
-
-    return product;
+    return this.productService.deleteProduct(productId);
   }
 
-  @Roles(UserType.Admin)
-  @Get()
-  async findAllProducts(): Promise<ReturnProductDto[]> {
-    const products = await this.productService.findAllProducts();
-
-    if (!products || products.length === 0) {
-      throw new NotFoundException('Products not found');
-    }
-
-    return products.map((product) => new ReturnProductDto(product));
-  }
-
-  @Roles(UserType.Admin)
+  @Roles(UserType.Admin, UserType.Root)
   @UsePipes(ValidationPipe)
   @Put('/:productId')
   async updateProduct(
-    @Body() updateProduct: UpdateProductDto,
+    @Body() updateProduct: UpdateProductDTO,
     @Param('productId') productId: number,
   ): Promise<ProductEntity> {
-    const product = await this.productService.updateProduct(
-      updateProduct,
-      productId,
-    );
+    return this.productService.updateProduct(updateProduct, productId);
+  }
 
-    return product;
+  @Get('/:idProduct/delivery/:cep')
+  async findPriceDelivery(
+    @Param('idProduct') idProduct: number,
+    @Param('cep') cep: string,
+  ): Promise<ReturnPriceDeliveryDto> {
+    return this.productService.findPriceDelivery(cep, idProduct);
   }
 }

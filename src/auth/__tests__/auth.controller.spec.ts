@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { loginUserMock } from '../__mocks__/login-user.mock';
-import { retunrLoginMock } from '../__mocks__/return-login.mock';
+import { returnLoginMock } from '../__mocks__/return-login.mock';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -14,7 +14,7 @@ describe('AuthController', () => {
         {
           provide: AuthService,
           useValue: {
-            login: jest.fn().mockResolvedValue(retunrLoginMock),
+            login: jest.fn().mockResolvedValue(returnLoginMock),
           },
         },
       ],
@@ -33,6 +33,6 @@ describe('AuthController', () => {
   it('should return userLogin', async () => {
     const userLogin = await controller.login(loginUserMock);
 
-    expect(userLogin).toEqual(retunrLoginMock);
+    expect(userLogin).toEqual(returnLoginMock);
   });
 });
