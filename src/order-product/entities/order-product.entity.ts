@@ -1,6 +1,6 @@
-import { OrderEntity } from 'src/order/entities/order.entity';
-import { ProductEntity } from 'src/product/entities/product.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { OrderEntity } from '../../order/entities/order.entity';
+import { ProductEntity } from '../../product/entities/product.entity';
+
 import {
   Column,
   CreateDateColumn,

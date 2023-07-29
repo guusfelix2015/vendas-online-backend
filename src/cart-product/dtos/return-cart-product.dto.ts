@@ -1,4 +1,4 @@
-import { ReturnCartDto } from 'src/cart/dtos/return-cart.dto';
+import { ReturnCartDto } from '../../cart/dtos/return-cart.dto';
 import { ReturnProductDto } from '../../product/dtos/return-products.dto';
 
 export class ReturnCartProductDto {
